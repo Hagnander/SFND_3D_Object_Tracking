@@ -138,7 +138,31 @@ void show3DObjects(std::vector<BoundingBox> &boundingBoxes, cv::Size worldSize, 
 // associate a given bounding box with the keypoints it contains
 void clusterKptMatchesWithROI(BoundingBox &boundingBox, std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPoint> &kptsCurr, std::vector<cv::DMatch> &kptMatches)
 {
-    // ...
+  std::vector<double> euclDistances;
+  for(auto match:kptMatches)
+  {
+      cv::Point2f currKpCoord = kptsCurr[match.trainIdx].pt;
+      cv::Point2f prevKpCoord = kptsPrev[match.queryIdx].pt;
+
+      auto euclDist = cv::norm(currKpCoord-prevKpCoord);
+      euclDistances.push_back(euclDist);
+        
+  }
+  // calculate median euclidian distance
+  int n = euclDistances.size();
+  std::sort(euclDistances.begin(), euclDistances.end());
+  double medianEuclDist = (euclDistances[std::ceil(n / 2. - 1)] + euclDistances[std::floor(n / 2.)]) / 2.0;
+  
+  //double mean = std::accumulate(dist.begin(),dist.end(),0)/dist.size();
+
+  for(auto it = 0; it<kptMatches.size(); it++)
+  {
+       cv::Point2f currKpCoord = kptsCurr[kptMatches[it].trainIdx].pt;
+      if(boundingBox.roi.contains(currKpCoord) && euclDistances[it]< medianEuclDist)
+      {
+          boundingBox.kptMatches.push_back(kptMatches[it]);
+      }
+  }
 }
 
 
