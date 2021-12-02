@@ -159,5 +159,73 @@ void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
 
 void matchBoundingBoxes(std::vector<cv::DMatch> &matches, std::map<int, int> &bbBestMatches, DataFrame &prevFrame, DataFrame &currFrame)
 {
-    // ...
+  // NOTE: After calling a cv::DescriptorMatcher::match function, each DMatch
+  // contains two keypoint indices, queryIdx and trainIdx, based on the order of image arguments to match.
+  // prevFrame.keypoints is indexed by queryIdx
+  // currFrame.keypoints is indexed by trainIdx
+  
+  int prev = prevFrame.boundingBoxes.size();
+  int curr = currFrame.boundingBoxes.size();
+  int countMatches[prev][curr] = {};
+
+  // loop across all keypoint matches
+  for (cv::DMatch match : matches) 
+  {
+    //Find the bounding box where the keypoints are locateed in the previos and current frame=candidates for matches
+    cv::KeyPoint query = prevFrame.keypoints[match.queryIdx];
+    auto query_pt = cv::Point(query.pt.x, query.pt.y);
+    bool prevBB_found = false;
+    
+    cv::KeyPoint train = currFrame.keypoints[match.trainIdx];
+    auto train_pt = cv::Point(train.pt.x, train.pt.y);
+    bool currBB_found = false;
+    
+    std::vector<int> prevBB_id, currBB_id;
+
+    // find bounding boxes in the previous frame that contain the matched keypoint
+    for (auto itr_p = 0; itr_p < prev; itr_p++) 
+    {
+      if (prevFrame.boundingBoxes[itr_p].roi.contains(query_pt)) 
+      {
+        prevBB_found = true;
+        prevBB_id.push_back(itr_p);
+      }
+    }
+    // find bounding boxes in the current frame that contain the matched keypoint
+    for (auto itr_c = 0; itr_c < curr; itr_c++) 
+    {
+      if (prevFrame.boundingBoxes[itr_c].roi.contains(train_pt)) 
+      {
+        currBB_found = true;
+        currBB_id.push_back(itr_c);
+      }
+    }
+    //Iterate through the bounding boxes 
+    // increment counters for all possible bounding box mathches that contain the current matched keypoint 
+    if (prevBB_found && currBB_found) 
+    {
+      for (auto itr_c : currBB_id) 
+      {
+        for (auto itr_p : prevBB_id) 
+        {          
+          countMatches[itr_p][itr_c] += 1;
+        }
+      }
+    } 
+    // for each bounding box in the previous frame, find the current frame bounding box with the most keypoint matches
+    for (auto itr_p = 0; itr_p < prev; itr_p++)
+    {
+      int max_count = 0;
+      int id_max = 0;
+      for (auto itr_c = 0; itr_c < curr; itr_c++)
+      {
+        if (countMatches[itr_p][itr_c] > max_count)
+        {
+          max_count = countMatches[itr_p][itr_c];
+          id_max = itr_c;
+        }
+      }  
+      bbBestMatches[itr_p] = id_max;
+    } 
+  }
 }
