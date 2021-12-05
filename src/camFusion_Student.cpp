@@ -153,8 +153,6 @@ void clusterKptMatchesWithROI(BoundingBox &boundingBox, std::vector<cv::KeyPoint
   std::sort(euclDistances.begin(), euclDistances.end());
   double medianEuclDist = (euclDistances[std::ceil(n / 2. - 1)] + euclDistances[std::floor(n / 2.)]) / 2.0;
   
-  //double mean = std::accumulate(dist.begin(),dist.end(),0)/dist.size();
-
   for(auto it = 0; it<kptMatches.size(); it++)
   {
        cv::Point2f currKpCoord = kptsCurr[kptMatches[it].trainIdx].pt;
