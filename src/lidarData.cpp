@@ -136,7 +136,7 @@ void showLidarImgOverlay(cv::Mat &img, std::vector<LidarPoint> &lidarPoints, cv:
                 cv::circle(overlay, pt, 5, cv::Scalar(0, 0, 255), -1);
             }
             else
-              cv::circle(overlay, pt, 5, cv::Scalar(0, green, red), -1);
+              cv::circle(overlay, pt, 5, cv::Scalar(0, green, red), -1); 
     }
     
     float opacity = 0.6;
