@@ -228,9 +228,9 @@ void computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPo
 
 
 The Image shows lidar points in the previous frame in green and in the current with red. There is clearly a difference in the measured points and this causes the unrelaible TTC.
-(images/Example1.png)
-(images/Example2.png)
-(images/Example3.png)
+![-](images/Example1.png)
+![-](images/Example2.png)
+![-](images/Example3.png)
 
 ---
 #### Task FP.6 Performance Evaluation 2
