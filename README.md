@@ -226,9 +226,8 @@ void computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPo
 #### Task FP.5 Performance Evaluation 1
 > Look for several examples where you have the impression that the Lidar-based TTC estimate is way off. Once you have found those, describe your observations and provide a sound argumentation why you think this happened.
 
-
-
-![The Image shows lidar points in the previous frame in green and in the current with red. There is clearly a difference in the measured points and this causes the unrelaible TTC.](images/Example1.png)
+The Images show lidar points in the previous frame in green and in the current with red. There is clearly a difference in the measured points and this causes the unrelaible TTC.
+![-](images/Example1.png)
 ![-](images/Example2.png)
 ![-](images/Example3.png)
 
