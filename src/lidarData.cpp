@@ -89,7 +89,7 @@ void showLidarTopview(std::vector<LidarPoint> &lidarPoints, cv::Size worldSize, 
     }
 }
 
-void showLidarImgOverlay(cv::Mat &img, std::vector<LidarPoint> &lidarPoints, cv::Mat &P_rect_xx, cv::Mat &R_rect_xx, cv::Mat &RT, cv::Mat *extVisImg)
+void showLidarImgOverlay(cv::Mat &img, std::vector<LidarPoint> &lidarPoints, cv::Mat &P_rect_xx, cv::Mat &R_rect_xx, cv::Mat &RT, cv::Mat *extVisImg, bool frameCompare, bool Green)
 {
     // init image for visualization
     cv::Mat visImg; 
@@ -128,9 +128,17 @@ void showLidarImgOverlay(cv::Mat &img, std::vector<LidarPoint> &lidarPoints, cv:
             float val = it->x;
             int red = min(255, (int)(255 * abs((val - maxVal) / maxVal)));
             int green = min(255, (int)(255 * (1 - abs((val - maxVal) / maxVal))));
-            cv::circle(overlay, pt, 5, cv::Scalar(0, green, red), -1);
+            if (frameCompare == true)
+            {
+              if (Green)
+                cv::circle(overlay, pt, 5, cv::Scalar(0, 255, 0), -1);
+              else
+                cv::circle(overlay, pt, 5, cv::Scalar(0, 0, 255), -1);
+            }
+            else
+              cv::circle(overlay, pt, 5, cv::Scalar(0, green, red), -1);
     }
-
+    
     float opacity = 0.6;
     cv::addWeighted(overlay, opacity, visImg, 1 - opacity, 0, visImg);
 
