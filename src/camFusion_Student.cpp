@@ -205,9 +205,6 @@ void computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPo
         TTC = NAN;
         return;
     }
-
-
-    // STUDENT TASK (replacement for meanDistRatio)
     std::sort(distRatios.begin(), distRatios.end());
     long medIndex = floor(distRatios.size() / 2.0);
     double medDistRatio = distRatios.size() % 2 == 0 ? (distRatios[medIndex - 1] + distRatios[medIndex]) / 2.0 : distRatios[medIndex]; // compute median dist. ratio to remove outlier influence
@@ -233,8 +230,6 @@ void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
         if (abs(it->y) <= laneWidth / 2.0)
         { // 3D point within ego lane?
             minXPrev = minXPrev > it->x ? it->x : minXPrev;
-            //Print the ones in previous frame in green
-            //Call print with green
         }
     }
     for (auto it = lidarPointsCurr.begin(); it != lidarPointsCurr.end(); ++it)
@@ -242,8 +237,6 @@ void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
         if (abs(it->y) <= laneWidth / 2.0)
         { // 3D point within ego lane?
             minXCurr = minXCurr > it->x ? it->x : minXCurr;
-            //Print the ones in previous frame in red
-            //Call print with red
         }
     }
     // compute TTC from both measurements
