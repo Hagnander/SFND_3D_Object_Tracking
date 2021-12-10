@@ -236,6 +236,7 @@ The Images show lidar points in the previous frame in green and in the current w
 > Run several detector / descriptor combinations and look at the differences in TTC estimation. Find out which methods perform best and also include several examples where camera-based TTC estimation is way off. As with Lidar, describe your observations again and also look into potential reasons.
 
 |Det/des combination|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|
+|---------------|-------|-------|--------|-------|-------|-------|-------|-------|-------|--------|-------|-------|-------|-------|--------|-------|-------|-------|
 |SHITOMASI/BRISK|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|
 |SHITOMASI/BRIEF|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|
 |SHITOMASI/ORB|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|
