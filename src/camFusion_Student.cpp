@@ -282,7 +282,7 @@ void matchBoundingBoxes(std::vector<cv::DMatch> &matches, std::map<int, int> &bb
     // find bounding boxes in the current frame that contain the matched keypoint
     for (auto itr_c = 0; itr_c < curr; itr_c++) 
     {
-      if (prevFrame.boundingBoxes[itr_c].roi.contains(train_pt)) 
+      if (currFrame.boundingBoxes[itr_c].roi.contains(train_pt)) 
       {
         currBB_found = true;
         currBB_id.push_back(itr_c);
@@ -317,3 +317,4 @@ void matchBoundingBoxes(std::vector<cv::DMatch> &matches, std::map<int, int> &bb
     } 
   }
 }
+
