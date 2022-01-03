@@ -226,9 +226,12 @@ void computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPo
 #### Task FP.5 Performance Evaluation 1
 > Look for several examples where you have the impression that the Lidar-based TTC estimate is way off. Once you have found those, describe your observations and provide a sound argumentation why you think this happened.
 
-The Images show lidar points in the previous frame in green and in the current with red. There is clearly a difference in the measured points and this causes the unrelaible TTC.
+||2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|
+|---------------|-------|-------|--------|-------|-------|-------|-------|-------|-------|--------|-------|-------|-------|-------|--------|-------|-------|-------|
+|Lidar based TTC|12.9722|12.264|13.9161|7.11572|16.2511|12.4213|34.3404|9.34376|18.1318|18.0318|3.83244|-10.8537|9.22307|10.9678|8.09422|3.17535|-9.99424|8.30978|
+Negitve values indicates that the distance between the vehicles are increasing.
+With a sample time of 0.1 sec it is unlikely to have a delta speed step in one sample (then going back to the earlier delta speed). The Images show lidar points in the previous frame in green and in the current with red. There is clearly a difference in the measured points and this causes the unrelaible TTC. A "ground truth" distance measurements between the cars would have been beneficial to get an overall indication of the calculated TTC quality.
 ![-](images/Example1.png)
-![-](images/Example2.png)
 ![-](images/Example3.png)
 
 ---
@@ -246,7 +249,6 @@ The Images show lidar points in the previous frame in green and in the current w
 |HARRIS/ORB|11.6594|12.0008|33.3851|13.7257|81.202|30.0765|13.4223|13.6065|11.272|13.0141|11.26|8.56336|23.4412|11.2796|5.56114|11.7219|11.7691|11.6215|
 |HARRIS/FREAK|56.0386|12.878|13.1344|12.9015|12.1851|-inf|11.1899|13.5027|11.4048|13.1432|12.2375|12.9124|6.26849|11.6313|12.572|13.9493|11.7562|10.9003|
 |FAST/BRISK|-0.121954|-0.143031|-0.371314|-0.126492|-0.14461|-0.119742|-0.167488|-0.276057|-0.169717|-0.193311|-0.141246|6.96657|-0.263895|-0.300483|-0.94391|-0.187974|-0.911686|-0.303624|
-|FAST/BRIEF|Fungerade inte|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|
 |FAST/ORB|-0.122123|-|-0.122338|-0.127755|-|-0.34718|0.0287349|-0.122187|-|-|-1.02852|-0.4522|-0.241474|-0.161573|-2.08042|-0.15487|-|-1.04496|
 |FAST/FREAK|-0.223974|-0.135778|-0.221114|-0.14601|-0.214178|-0.173258|-0.252003|0.334848|-0.162033|-2.34349|-7.36005|-0.130252|-0.369233|-0.229151|-0.19427|-0.393693|-0.460221|-0.363482|
 |BRISK/BRISK|16.3066|36.912|29.6395|24.8403|-62.8189|35.1906|14.2517|16.0219|23.7244|21.613|16.5439|15.0426|12.3592|12.8835|12.1932|9.90027|9.61093|13.4156|
