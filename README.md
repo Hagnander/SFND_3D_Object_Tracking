@@ -240,7 +240,7 @@ With a sample time of 0.1 sec it is unlikely to have a delta speed step in one s
 #### Task FP.6 Performance Evaluation 2
 > Run several detector / descriptor combinations and look at the differences in TTC estimation. Find out which methods perform best and also include several examples where camera-based TTC estimation is way off. As with Lidar, describe your observations again and also look into potential reasons.
 
-The SHITOMASI/BRIEF combination appears to be performing best.
+The SHITOMASI/BRIEF combination appears to be performing best. A "ground truth" distance measurements between the cars would have been beneficial to get an overall indication of the calculated TTC quality. 
 
 |Det/des combination|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|
 |---------------|-------|-------|--------|-------|-------|-------|-------|-------|-------|--------|-------|-------|-------|-------|--------|-------|-------|-------|
