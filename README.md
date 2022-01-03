@@ -226,6 +226,7 @@ void computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPo
 #### Task FP.5 Performance Evaluation 1
 > Look for several examples where you have the impression that the Lidar-based TTC estimate is way off. Once you have found those, describe your observations and provide a sound argumentation why you think this happened.
 Negative values indicates that the distance between the vehicles are increasing.
+
 With a sample time of 0.1 sec it is unlikely to have a delta speed step in one sample (then going back to the earlier delta speed). The Images show lidar points in the previous frame in green and in the current with red. There is clearly a difference in the measured points and this causes the unrelaible TTC. A "ground truth" distance measurements between the cars would have been beneficial to get an overall indication of the calculated TTC quality.
 ![-](images/Example1.png)
 ![-](images/Example3.png)
@@ -239,6 +240,8 @@ With a sample time of 0.1 sec it is unlikely to have a delta speed step in one s
 #### Task FP.6 Performance Evaluation 2
 > Run several detector / descriptor combinations and look at the differences in TTC estimation. Find out which methods perform best and also include several examples where camera-based TTC estimation is way off. As with Lidar, describe your observations again and also look into potential reasons.
 
+The SHITOMASI/BRIEF combination appears to be performing best.
+
 |Det/des combination|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|
 |---------------|-------|-------|--------|-------|-------|-------|-------|-------|-------|--------|-------|-------|-------|-------|--------|-------|-------|-------|
 |SHITOMASI/BRISK|14.1094|-inf|18.1502|-inf|32.7458|-inf|46.607|-inf|13.2095|-3.45031|22.9315|19.1377|13.503|14.0061|12.0785|-inf|11.3141|12.0282|
@@ -249,9 +252,6 @@ With a sample time of 0.1 sec it is unlikely to have a delta speed step in one s
 |HARRIS/BRIEF|12.37|12.4188|-1.91978|12.1503|13.4692|24.4903|13.4637|13.7279|11.272|14.9903|11.1985|11.9215|10.7347|11.2796|6.09702|10.9972|11.7691|10.0812|
 |HARRIS/ORB|11.6594|12.0008|33.3851|13.7257|81.202|30.0765|13.4223|13.6065|11.272|13.0141|11.26|8.56336|23.4412|11.2796|5.56114|11.7219|11.7691|11.6215|
 |HARRIS/FREAK|56.0386|12.878|13.1344|12.9015|12.1851|-inf|11.1899|13.5027|11.4048|13.1432|12.2375|12.9124|6.26849|11.6313|12.572|13.9493|11.7562|10.9003|
-|FAST/BRISK|-0.121954|-0.143031|-0.371314|-0.126492|-0.14461|-0.119742|-0.167488|-0.276057|-0.169717|-0.193311|-0.141246|6.96657|-0.263895|-0.300483|-0.94391|-0.187974|-0.911686|-0.303624|
-|FAST/ORB|-0.122123|-|-0.122338|-0.127755|-|-0.34718|0.0287349|-0.122187|-|-|-1.02852|-0.4522|-0.241474|-0.161573|-2.08042|-0.15487|-|-1.04496|
-|FAST/FREAK|-0.223974|-0.135778|-0.221114|-0.14601|-0.214178|-0.173258|-0.252003|0.334848|-0.162033|-2.34349|-7.36005|-0.130252|-0.369233|-0.229151|-0.19427|-0.393693|-0.460221|-0.363482|
 |BRISK/BRISK|16.3066|36.912|29.6395|24.8403|-62.8189|35.1906|14.2517|16.0219|23.7244|21.613|16.5439|15.0426|12.3592|12.8835|12.1932|9.90027|9.61093|13.4156|
 |BRISK/BRIEF|14.7293|25.8349|14.6871|14.7582|22.3963|20.5734|16.7188|23.0621|14.6801|10.4943|13.9848|12.5793|15.2417|8.8722|10.9723|9.91473|8.98049|11.081|
 |BRISK/ORB|28.0155|22.9119|37.4289|32.1918|-53.9765|23.4811|14.8965|-12.2667|12.1284|24.6842|15.5091|12.3001|11.9018|13.0109|10.6673|9.94504|10.2867|13.0851|
