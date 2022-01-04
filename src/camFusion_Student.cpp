@@ -221,24 +221,39 @@ void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
     // auxiliary variables
     double dT = 1/frameRate;        // time between two measurements in seconds
     double laneWidth = 4.0; // assumed width of the ego lane
+    
+    std::sort(lidarPointsPrev.begin(), lidarPointsPrev.end(), [](const LidarPoint& Lp1, const LidarPoint& Lp2 )
+    {
+      return Lp1.x<Lp2.x;
+    });
+    std::sort(lidarPointsCurr.begin(), lidarPointsCurr.end(), [](const LidarPoint& Lp1, const LidarPoint& Lp2 )
+    {
+      return Lp1.x<Lp2.x;
+    });
+  
+    std::vector<LidarPoint> lidarPointsPrevForTTC;
+    std::vector<LidarPoint> lidarPointsCurrForTTC;  
+  
+    // Reduce the number of Lidar points. Focus on the closest ones (do not reduce if no of points are below 20)
+    int nPrev = lidarPointsPrev.size() < 20 ? lidarPointsPrev.size() : lidarPointsPrev.size() / 10;
+    int nCurr = lidarPointsCurr.size() < 20 ? lidarPointsPrev.size() : lidarPointsCurr.size() / 10;
 
-    // find closest distance to Lidar points within ego lane
-    double minXPrev = 1e9, minXCurr = 1e9;
-    for (auto it = lidarPointsPrev.begin(); it != lidarPointsPrev.end(); ++it)
+    for (int it = 0; it < nPrev; it++) 
     {
-        
-        if (abs(it->y) <= laneWidth / 2.0)
-        { // 3D point within ego lane?
-            minXPrev = minXPrev > it->x ? it->x : minXPrev;
-        }
+      lidarPointsPrevForTTC.push_back(lidarPointsPrev[it]);
     }
-    for (auto it = lidarPointsCurr.begin(); it != lidarPointsCurr.end(); ++it)
+    for (int it = 0; it < nCurr; it++) 
     {
-        if (abs(it->y) <= laneWidth / 2.0)
-        { // 3D point within ego lane?
-            minXCurr = minXCurr > it->x ? it->x : minXCurr;
-        }
+      lidarPointsCurrForTTC.push_back(lidarPointsCurr[it]);
     }
+    
+    // compute median dist. for previous and current
+    long medIndexPrev = floor(lidarPointsPrev.size() / 2.0);
+    double minXPrev = lidarPointsPrev.size() % 2 == 0 ? (lidarPointsPrev[medIndexPrev - 1].x + lidarPointsPrev[medIndexPrev].x)     / 2.0 : lidarPointsPrev[medIndexPrev].x;
+  
+    long medIndexCurr = floor(lidarPointsCurr.size() / 2.0);
+    double minXCurr = lidarPointsCurr.size() % 2 == 0 ? (lidarPointsCurr[medIndexCurr - 1].x + lidarPointsCurr[medIndexCurr].x)     / 2.0 : lidarPointsCurr[medIndexPrev].x;
+    
     // compute TTC from both measurements
     TTC = minXCurr * dT / (minXPrev - minXCurr);
     cout << "TTC for Lidar: " << TTC << endl;

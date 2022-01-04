@@ -99,6 +99,8 @@ void matchBoundingBoxes(std::vector<cv::DMatch> &matches, std::map<int, int> &bb
 #### Task FP.2 Compute Lidar-based TTC
 > Compute the time-to-collision in second for all matched 3D objects using only Lidar measurements from the matched bounding boxes between current and previous frame.
 
+First implementation
+
 ```c++
 void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
                      std::vector<LidarPoint> &lidarPointsCurr, double frameRate, double &TTC)
@@ -129,6 +131,54 @@ void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
   	cout << "TTC for Lidar: " << TTC << endl;
 }
 ```
+Second implementation
+```c++
+void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
+                     std::vector<LidarPoint> &lidarPointsCurr, double frameRate, double &TTC)
+{
+    // auxiliary variables
+    double dT = 1/frameRate;        // time between two measurements in seconds
+    double laneWidth = 4.0; // assumed width of the ego lane
+    
+    std::sort(lidarPointsPrev.begin(), lidarPointsPrev.end(), [](const LidarPoint& Lp1, const LidarPoint& Lp2 )
+    {
+      return Lp1.x<Lp2.x;
+    });
+    std::sort(lidarPointsCurr.begin(), lidarPointsCurr.end(), [](const LidarPoint& Lp1, const LidarPoint& Lp2 )
+    {
+      return Lp1.x<Lp2.x;
+    });
+  
+    std::vector<LidarPoint> lidarPointsPrevForTTC;
+    std::vector<LidarPoint> lidarPointsCurrForTTC;  
+  
+    // Reduce the number of Lidar points. Focus on the closest ones (do not reduce if no of points are below 20)
+    int nPrev = lidarPointsPrev.size() < 20 ? lidarPointsPrev.size() : lidarPointsPrev.size() / 10;
+    int nCurr = lidarPointsCurr.size() < 20 ? lidarPointsPrev.size() : lidarPointsCurr.size() / 10;
+
+    for (int it = 0; it < nPrev; it++) 
+    {
+      lidarPointsPrevForTTC.push_back(lidarPointsPrev[it]);
+    }
+    for (int it = 0; it < nCurr; it++) 
+    {
+      lidarPointsCurrForTTC.push_back(lidarPointsCurr[it]);
+    }
+    
+    // compute median dist. for previous and current
+    long medIndexPrev = floor(lidarPointsPrev.size() / 2.0);
+    double minXPrev = lidarPointsPrev.size() % 2 == 0 ? (lidarPointsPrev[medIndexPrev - 1].x + lidarPointsPrev[medIndexPrev].x)     / 2.0 : lidarPointsPrev[medIndexPrev].x;
+  
+    long medIndexCurr = floor(lidarPointsCurr.size() / 2.0);
+    double minXCurr = lidarPointsCurr.size() % 2 == 0 ? (lidarPointsCurr[medIndexCurr - 1].x + lidarPointsCurr[medIndexCurr].x)     / 2.0 : lidarPointsCurr[medIndexPrev].x;
+    
+    // compute TTC from both measurements
+    TTC = minXCurr * dT / (minXPrev - minXCurr);
+    cout << "TTC for Lidar: " << TTC << endl;
+}
+```
+
+
 #### Task FP.3 Associate Keypoint Correspondences with Bounding Boxes
 > Prepare the TTC computation based on camera measurements by associating keypoint correspondences to the bounding boxes which enclose them. All matches which satisfy this condition must be added to a vector in the respective bounding box.
 
