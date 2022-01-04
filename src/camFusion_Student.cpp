@@ -252,7 +252,7 @@ void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
     double minXPrev = lidarPointsPrev.size() % 2 == 0 ? (lidarPointsPrev[medIndexPrev - 1].x + lidarPointsPrev[medIndexPrev].x)     / 2.0 : lidarPointsPrev[medIndexPrev].x;
   
     long medIndexCurr = floor(lidarPointsCurr.size() / 2.0);
-    double minXCurr = lidarPointsCurr.size() % 2 == 0 ? (lidarPointsCurr[medIndexCurr - 1].x + lidarPointsCurr[medIndexCurr].x)     / 2.0 : lidarPointsCurr[medIndexPrev].x;
+    double minXCurr = lidarPointsCurr.size() % 2 == 0 ? (lidarPointsCurr[medIndexCurr - 1].x + lidarPointsCurr[medIndexCurr].x)     / 2.0 : lidarPointsCurr[medIndexCurr].x;
     
     // compute TTC from both measurements
     TTC = minXCurr * dT / (minXPrev - minXCurr);

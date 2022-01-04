@@ -170,7 +170,7 @@ void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
     double minXPrev = lidarPointsPrev.size() % 2 == 0 ? (lidarPointsPrev[medIndexPrev - 1].x + lidarPointsPrev[medIndexPrev].x)     / 2.0 : lidarPointsPrev[medIndexPrev].x;
   
     long medIndexCurr = floor(lidarPointsCurr.size() / 2.0);
-    double minXCurr = lidarPointsCurr.size() % 2 == 0 ? (lidarPointsCurr[medIndexCurr - 1].x + lidarPointsCurr[medIndexCurr].x)     / 2.0 : lidarPointsCurr[medIndexPrev].x;
+    double minXCurr = lidarPointsCurr.size() % 2 == 0 ? (lidarPointsCurr[medIndexCurr - 1].x + lidarPointsCurr[medIndexCurr].x)     / 2.0 : lidarPointsCurr[medIndexCurr].x;
     
     // compute TTC from both measurements
     TTC = minXCurr * dT / (minXPrev - minXCurr);
@@ -288,7 +288,7 @@ The steps are still present even if they have been reduced with the more robust 
 ||2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|
 |---------------|-------|-------|--------|-------|-------|-------|-------|-------|-------|--------|-------|-------|-------|-------|--------|-------|-------|-------|
 |Lidar based TTC, first implementation|12.9722|12.264|13.9161|7.11572|16.2511|12.4213|34.3404|9.34376|18.1318|18.0318|3.83244|-10.8537|9.22307|10.9678|8.09422|3.17535|-9.99424|8.30978|
-|Lidar based TTC, second implementation|12.5156|13.7103|13.6017|16.6894|15.7465|12.5739|13.9617|13.5964|13.0241|11.1746|12.8086|8.95978|9.96439|9.72968|8.52157|9.51552|10.0317|8.29642|
+|Lidar based TTC, second implementation|12.5156|12.6142|14.091|16.6894|15.7465|12.7835|11.9844|13.1241|13.0241|11.1746|12.8086|8.95978|9.96439|9.59863|8.52157|9.51552|9.61241|8.3988|
 
 
 ---
